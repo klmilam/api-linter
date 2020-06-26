@@ -26,11 +26,15 @@ var required = &lint.FieldRule{
 	Name:   lint.NewRuleName(203, "required"),
 	OnlyIf: withoutRequiredFieldBehavior,
 	LintField: func(f *desc.FieldDescriptor) []lint.Problem {
+		if notRequiredRegexp.MatchString(f.GetSourceInfo().GetLeadingComments()) {
+			return nil
+		}
 		return checkLeadingComments(f, requiredRegexp, "REQUIRED")
 	},
 }
 
 var requiredRegexp = regexp.MustCompile("(?i).*required.*")
+var notRequiredRegexp = regexp.MustCompile("(?i).*not required.*")
 
 func withoutRequiredFieldBehavior(f *desc.FieldDescriptor) bool {
 	return !utils.GetFieldBehavior(f).Contains("REQUIRED")

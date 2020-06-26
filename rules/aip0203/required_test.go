@@ -106,6 +106,12 @@ func TestRequired(t *testing.T) {
 				Message: "google.api.field_behavior",
 			}},
 		},
+		{
+			name:    "Valid-not-required",
+			comment: "not required",
+			field:   title,
+			problems: nil,
+		},
 	}
 
 	for _, test := range testCases {
